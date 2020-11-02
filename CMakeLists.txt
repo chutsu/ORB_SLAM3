@@ -7,6 +7,9 @@ ENDIF()
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
+FIND_PACKAGE(catkin REQUIRED COMPONENTS roscpp)
+CATKIN_PACKAGE( INCLUDE_DIRS include LIBRARIES ${PROJECT_NAME})
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall   -O3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native")
@@ -126,6 +129,15 @@ target_link_libraries(${PROJECT_NAME}
                       boost_serialization
                       crypto)
 
+INSTALL(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+INSTALL(DIRECTORY include
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+
 # Extract vocabular file
 execute_process(COMMAND
   ${CMAKE_COMMAND} -E
@@ -189,3 +201,4 @@ target_link_libraries(stereo_inertial_euroc ${PROJECT_NAME})
 add_executable(stereo_inertial_tum_vi
 Examples/Stereo-Inertial/stereo_inertial_tum_vi.cc)
 target_link_libraries(stereo_inertial_tum_vi ${PROJECT_NAME})
+
